@@ -1,0 +1,294 @@
+{
+  "sections": [
+    {
+      "slug": "overview",
+      "title": "Overview",
+      "page_ids": [
+        "overview"
+      ]
+    },
+    {
+      "slug": "repo_manual",
+      "title": "repo_manual",
+      "page_ids": [
+        "repo_manual",
+        "repo_manual.cli",
+        "repo_manual.config",
+        "repo_manual.model",
+        "repo_manual.freshness",
+        "repo_manual.hashing",
+        "repo_manual.plan",
+        "repo_manual.scan",
+        "repo_manual.store",
+        "repo_manual.verify"
+      ]
+    },
+    {
+      "slug": "repo_manual.scan",
+      "title": "repo_manual.scan",
+      "page_ids": [
+        "repo_manual.scan.base",
+        "repo_manual.scan.python"
+      ]
+    }
+  ],
+  "pages": {
+    "overview": {
+      "id": "overview",
+      "title": "Overview — start here",
+      "section": "overview",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/cli.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [],
+      "importance": "high",
+      "description": "What this repo is, the mental model, and how the systems connect.",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual": {
+      "id": "repo_manual",
+      "title": "repo_manual",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/__init__.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [],
+      "importance": "high",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.cli": {
+      "id": "repo_manual.cli",
+      "title": "repo_manual.cli",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/cli.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.freshness",
+        "repo_manual.model",
+        "repo_manual.plan",
+        "repo_manual.scan",
+        "repo_manual.store",
+        "repo_manual.verify"
+      ],
+      "importance": "high",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.config": {
+      "id": "repo_manual.config",
+      "title": "repo_manual.config",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/config.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [],
+      "importance": "high",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.model": {
+      "id": "repo_manual.model",
+      "title": "repo_manual.model",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/model.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [],
+      "importance": "high",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.freshness": {
+      "id": "repo_manual.freshness",
+      "title": "repo_manual.freshness",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/freshness.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual.hashing",
+        "repo_manual.model"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.hashing": {
+      "id": "repo_manual.hashing",
+      "title": "repo_manual.hashing",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/hashing.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.plan": {
+      "id": "repo_manual.plan",
+      "title": "repo_manual.plan",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/plan.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual.model"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.scan": {
+      "id": "repo_manual.scan",
+      "title": "repo_manual.scan",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/scan/__init__.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual.scan.base"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.store": {
+      "id": "repo_manual.store",
+      "title": "repo_manual.store",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/store.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.freshness",
+        "repo_manual.model",
+        "repo_manual.plan"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.verify": {
+      "id": "repo_manual.verify",
+      "title": "repo_manual.verify",
+      "section": "repo_manual",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/verify.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.model",
+        "repo_manual.store"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.scan.base": {
+      "id": "repo_manual.scan.base",
+      "title": "repo_manual.scan.base",
+      "section": "repo_manual.scan",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/scan/base.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual.config",
+        "repo_manual.model",
+        "repo_manual.scan.python"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    },
+    "repo_manual.scan.python": {
+      "id": "repo_manual.scan.python",
+      "title": "repo_manual.scan.python",
+      "section": "repo_manual.scan",
+      "relevant_files": [
+        {
+          "path": "src/repo_manual/scan/python.py",
+          "hash": ""
+        }
+      ],
+      "related_pages": [
+        "repo_manual.config",
+        "repo_manual.hashing",
+        "repo_manual.model",
+        "repo_manual.scan.base"
+      ],
+      "importance": "medium",
+      "description": "",
+      "source": "skeleton",
+      "status": "pending",
+      "generated_at": null
+    }
+  }
+}

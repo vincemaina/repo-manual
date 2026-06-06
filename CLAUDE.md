@@ -2,18 +2,45 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Current status: design exploration, no implementation yet
+## Current status: working end-to-end (AI-grouped manual, narrated, verified)
 
-This repo currently contains **only design documents** — there is no source code, no
-build, no tests, and no CLI. Do not look for or invent commands to build/lint/test;
-they don't exist yet. The first real work is to turn the design below into a first
-vertical slice.
+`src/repo_manual/` is a Python CLI that produces a committed, version-controlled orientation manual.
+The full loop works with **no bundled LLM** — the agent running the tool is the narrator. Commands
+(run via `uv run repo-manual ...`):
 
-Read these before doing anything substantive (they are the spec):
-- `docs/design-notes.md` — the "graph × narrative" framing, prior art, and phasing.
-- `notes/chatgpt/PROMPT.md` — the fuller product vision, `.repo-manual/` folder
-  layout, data model, CLI command set, and MVP checklist.
-- `docs/brainstorm.md` — loose idea backlog (decision tracking, test coverage links).
+- `scan` — analyze → structural index (`index/*.json`).
+- `structure` — emit the grouping brief + a suggested `structure.json` for the orchestrator to turn
+  package layout into real **systems** (named groups of files by what they do, cross-folder).
+- `generate` — plan + write the manual. Uses `structure.json` if present (AI grouping), else a
+  deterministic package seed. Writes skeleton pages (a `pending` marker — deliberately NOT the word
+  "TODO", so we never pollute a documented repo's task tracker) + a `GenerationTask` in `plan.json`.
+- `plan` — pages still needing narrative, and where to ground each.
+- `brief <page>` — print one page's full narration brief (files + symbol outline + recipe rules), ready
+  to hand to an orchestrator to write in one pass.
+- `ingest` — promote orchestrator-filled pages to narrated, pin freshness hashes.
+- `stale [--check]` — what drifted / is unwritten; `--check` is a non-zero gate for a pre-commit hook.
+- `verify [--strict]` — **trust gate**: check every `Sources: [file:Ls-Le]` citation resolves to a real
+  file + line range (catches fabricated/drifted references). No LLM.
+- `hook [--install]` — print/install a pre-commit drift + citation check (`stale --check` + `verify`).
+
+Build/lint/test: `uv sync`, `uv run pytest` (23 tests), `uv run ruff check src tests`. Note: page
+metadata enums parse tolerantly (`model._enum_or`) so an older/edited `.repo-manual` degrades gracefully
+rather than crashing the load.
+
+**Flagship artifact:** `../dbt-test-lineage/.repo-manual/` is a complete, AI-grouped (5 systems +
+overview), fully-narrated, citation-verified manual — the reference for what good output looks like.
+This repo also has its own `.repo-manual/` (package-seed skeletons).
+
+What's NOT built: an *autonomous* provider (`claude -p`/API) for headless CI runs — deliberately
+deferred; the agent-as-orchestrator path is the primary one (see below).
+
+Design docs (the spec / rationale):
+- `docs/architecture.md` — the settled v0 decisions + build order (steps 1–8).
+- `docs/generation-recipe.md` — the DeepWiki recipe we lift + our 7 adaptations.
+- `docs/landscape.md` — prior art and where our wedge is.
+- `docs/sample-orientation-manual.md` — the end-state a narrated manual should reach.
+- `notes/chatgpt/PROMPT.md`, `docs/design-notes.md`, `docs/brainstorm.md` — earlier idea backlog;
+  treat as context, not final spec (parts are superseded by `architecture.md`).
 
 ## What this project is
 
@@ -41,17 +68,19 @@ as **Markdown + YAML frontmatter** (human docs) plus **JSON indexes** (generated
 graph/symbols/links). The CLI, web UI, and future IDE extension are all *views* over
 that folder — the folder is the source of truth.
 
-## Decisions still open (resolve before building, don't assume)
+## Decisions settled (don't relitigate without the user)
 
-- **Implementation language is unsettled.** `pyproject.toml` declares a Python ≥3.12
-  package named `repo-manual` with no dependencies, but `notes/chatgpt/PROMPT.md`
-  argues for **TypeScript/Node** (since the first target ecosystem is TS/React/Next.js,
-  using tree-sitter / the TS compiler API). These conflict. Confirm the intended
-  language with the user before scaffolding — don't silently pick one.
-- **Primary UI:** graph-first vs. outline/tree-first with graph as an on-demand
-  "show neighborhood" view (design notes lean toward outline-first).
-- **Language scope:** Python-first (matches sibling lineage tools) vs. multi-language
-  via tree-sitter/SCIP from the start.
+- **Language: Python ≥3.12** (matches the sibling lineage tools; stdlib `ast` for the analyzer).
+  TypeScript is a *later* analyzer behind the `LanguageAnalyzer` protocol, not a rewrite.
+- **Primary view: outline/nested-Markdown-first.** The manual is committed Markdown browsed in the
+  editor/GitHub; graphs are local (blast-radius), never a whole-repo dump. A viewer is optional/later.
+- **Language scope: Python-first**, pluggable for more later.
+- **The LLM is the *orchestrator*, not a bundled provider.** The agent running `repo-manual` (often the
+  same agent that wrote the code) does the narration: the tool emits `GenerationTask`s + skeleton pages
+  with fenced generated regions; the orchestrator reads `plan.json`, Reads the cited source, and fills
+  the generated region; `repo-manual ingest` pins freshness. An autonomous `claude -p`/API provider is a
+  *fallback* for standalone runs (CI/cron), planned for step 7. This is why there is no LLM dependency in
+  `pyproject.toml`.
 
 ## Architectural template and test strategy
 

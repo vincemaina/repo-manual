@@ -1,0 +1,398 @@
+{
+  "pending": [
+    {
+      "page_id": "overview",
+      "title": "Overview — start here",
+      "section": "overview",
+      "importance": "high",
+      "relevant_files": [
+        "src/repo_manual/cli.py"
+      ],
+      "related_pages": [],
+      "symbol_outline": [
+        "_load_or_init_config(path: str) -> ManualConfig  [L41-49]",
+        "_analyze(config: ManualConfig)  [L52-53]",
+        "_now() -> str  [L56-57]",
+        "init(path: str=typer.Argument('.', help='Repo root to initialize.')) -> None  [L61-67] — Create the ``.repo-manual/`` folder and config (idempotent).",
+        "scan(path: str=typer.Argument('.', help='Repo root to scan.')) -> None  [L71-80] — Analyze the repo and write only the deterministic structural index (no pages).",
+        "generate(path: str=typer.Argument('.', help='Repo root.'), provider: str=typer.Option('none', help=\"LLM orchestrator. 'none' = deterministic skeletons.\")) -> None  [L84-108] — Scan + plan + write the manual. ``--provider none`` writes skeletons for an orchestrator to fill.",
+        "plan(path: str=typer.Argument('.', help='Repo root.'), as_json: bool=typer.Option(False, '--json', help='Print the raw plan.json.')) -> None  [L112-138] — Show the pending generation tasks — what the orchestrator should narrate next, and from where.",
+        "stale(path: str=typer.Argument('.', help='Repo root.'), check: bool=typer.Option(False, '--check', help='Exit non-zero if any page has drifted (for a pre-commit hook).'), include_pending: bool=typer.Option(False, '--include-pending', help='With --check, also fail on never-narrated pages.')) -> None  [L142-176] — List pages that are out of date (drifted source) or never narrated.",
+        "ingest(path: str=typer.Argument('.', help='Repo root.')) -> None  [L180-190] — Promote orchestrator-filled skeletons to narrated pages and pin their freshness hashes.",
+        "structure(path: str=typer.Argument('.', help='Repo root.')) -> None  [L194-210] — Emit the grouping brief + a suggested ``structure.json`` for the orchestrator to turn package",
+        "verify(path: str=typer.Argument('.', help='Repo root.'), strict: bool=typer.Option(False, '--strict', help='Also fail when a narrated page cites <2 sources.')) -> None  [L214-228] — Check every narrated page's source citations resolve to real files and line ranges (no LLM).",
+        "brief(page_id: str=typer.Argument(..., help='The page id to narrate (see `repo-manual plan`).'), path: str=typer.Option('.', '--path', help='Repo root.'), as_json: bool=typer.Option(False, '--json', help='Emit the raw GenerationTask JSON.')) -> None  [L232-277] — Print one page's complete narration brief — the files to ground in, the symbol outline, and the",
+        "hook(path: str=typer.Argument('.', help='Repo root.'), install: bool=typer.Option(False, '--install', help='Write the snippet to .git/hooks/pre-commit.')) -> None  [L281-302] — Print (or --install) a git pre-commit hook that flags a manual gone stale + broken citations.",
+        "_no_manual() -> int  [L314-316]"
+      ],
+      "internal_deps": [
+        "src/repo_manual/__init__.py",
+        "src/repo_manual/config.py",
+        "src/repo_manual/freshness.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/plan.py",
+        "src/repo_manual/scan/__init__.py",
+        "src/repo_manual/store.py",
+        "src/repo_manual/verify.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual",
+      "title": "repo_manual",
+      "section": "repo_manual",
+      "importance": "high",
+      "relevant_files": [
+        "src/repo_manual/__init__.py"
+      ],
+      "related_pages": [],
+      "symbol_outline": [],
+      "internal_deps": []
+    },
+    {
+      "page_id": "repo_manual.cli",
+      "title": "repo_manual.cli",
+      "section": "repo_manual",
+      "importance": "high",
+      "relevant_files": [
+        "src/repo_manual/cli.py"
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.freshness",
+        "repo_manual.model",
+        "repo_manual.plan",
+        "repo_manual.scan",
+        "repo_manual.store",
+        "repo_manual.verify"
+      ],
+      "symbol_outline": [
+        "_load_or_init_config(path: str) -> ManualConfig  [L41-49]",
+        "_analyze(config: ManualConfig)  [L52-53]",
+        "_now() -> str  [L56-57]",
+        "init(path: str=typer.Argument('.', help='Repo root to initialize.')) -> None  [L61-67] — Create the ``.repo-manual/`` folder and config (idempotent).",
+        "scan(path: str=typer.Argument('.', help='Repo root to scan.')) -> None  [L71-80] — Analyze the repo and write only the deterministic structural index (no pages).",
+        "generate(path: str=typer.Argument('.', help='Repo root.'), provider: str=typer.Option('none', help=\"LLM orchestrator. 'none' = deterministic skeletons.\")) -> None  [L84-108] — Scan + plan + write the manual. ``--provider none`` writes skeletons for an orchestrator to fill.",
+        "plan(path: str=typer.Argument('.', help='Repo root.'), as_json: bool=typer.Option(False, '--json', help='Print the raw plan.json.')) -> None  [L112-138] — Show the pending generation tasks — what the orchestrator should narrate next, and from where.",
+        "stale(path: str=typer.Argument('.', help='Repo root.'), check: bool=typer.Option(False, '--check', help='Exit non-zero if any page has drifted (for a pre-commit hook).'), include_pending: bool=typer.Option(False, '--include-pending', help='With --check, also fail on never-narrated pages.')) -> None  [L142-176] — List pages that are out of date (drifted source) or never narrated.",
+        "ingest(path: str=typer.Argument('.', help='Repo root.')) -> None  [L180-190] — Promote orchestrator-filled skeletons to narrated pages and pin their freshness hashes.",
+        "structure(path: str=typer.Argument('.', help='Repo root.')) -> None  [L194-210] — Emit the grouping brief + a suggested ``structure.json`` for the orchestrator to turn package",
+        "verify(path: str=typer.Argument('.', help='Repo root.'), strict: bool=typer.Option(False, '--strict', help='Also fail when a narrated page cites <2 sources.')) -> None  [L214-228] — Check every narrated page's source citations resolve to real files and line ranges (no LLM).",
+        "brief(page_id: str=typer.Argument(..., help='The page id to narrate (see `repo-manual plan`).'), path: str=typer.Option('.', '--path', help='Repo root.'), as_json: bool=typer.Option(False, '--json', help='Emit the raw GenerationTask JSON.')) -> None  [L232-277] — Print one page's complete narration brief — the files to ground in, the symbol outline, and the",
+        "hook(path: str=typer.Argument('.', help='Repo root.'), install: bool=typer.Option(False, '--install', help='Write the snippet to .git/hooks/pre-commit.')) -> None  [L281-302] — Print (or --install) a git pre-commit hook that flags a manual gone stale + broken citations.",
+        "_no_manual() -> int  [L314-316]"
+      ],
+      "internal_deps": [
+        "src/repo_manual/__init__.py",
+        "src/repo_manual/config.py",
+        "src/repo_manual/freshness.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/plan.py",
+        "src/repo_manual/scan/__init__.py",
+        "src/repo_manual/store.py",
+        "src/repo_manual/verify.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.config",
+      "title": "repo_manual.config",
+      "section": "repo_manual",
+      "importance": "high",
+      "relevant_files": [
+        "src/repo_manual/config.py"
+      ],
+      "related_pages": [],
+      "symbol_outline": [
+        "ManualConfig  [L28-76] — Resolved config. ``root`` is the absolute repo root; the rest is what lands in the JSON file.",
+        "ManualConfig.output_path(self) -> Path  [L39-40]",
+        "ManualConfig.to_dict(self) -> dict  [L42-50]",
+        "ManualConfig.from_dict(cls, root: Path, d: dict) -> ManualConfig  [L53-61]",
+        "ManualConfig.load(cls, root: Path) -> ManualConfig  [L64-70] — Load ``<root>/<output>/manual.config.json`` if present, else return defaults.",
+        "ManualConfig.save(self) -> Path  [L72-76]"
+      ],
+      "internal_deps": []
+    },
+    {
+      "page_id": "repo_manual.model",
+      "title": "repo_manual.model",
+      "section": "repo_manual",
+      "importance": "high",
+      "relevant_files": [
+        "src/repo_manual/model.py"
+      ],
+      "related_pages": [],
+      "symbol_outline": [
+        "_enum_or(enum_cls: type[_E], value: object, default: _E) -> _E  [L20-27] — Parse an enum value, falling back to ``default`` for unknown/missing values instead of raising —",
+        "SymbolKind  [L35-39]",
+        "EdgeKind  [L42-44]",
+        "SourceFile  [L48-71] — One analyzed source file. ``path`` is repo-relative & POSIX; ``content_hash`` powers freshness.",
+        "SourceFile.to_dict(self) -> dict  [L56-62]",
+        "SourceFile.from_dict(cls, d: dict) -> SourceFile  [L65-71]",
+        "Symbol  [L75-113] — A definition. ``id`` is ``<file>::<qualname>`` (module symbol: ``<file>::<module>``).",
+        "Symbol.to_dict(self) -> dict  [L88-99]",
+        "Symbol.from_dict(cls, d: dict) -> Symbol  [L102-113]",
+        "Edge  [L117-144] — A directed relationship. For ``IMPORTS`` src/dst are file paths; for ``CALLS`` they are",
+        "Edge.to_dict(self) -> dict  [L127-134]",
+        "Edge.from_dict(cls, d: dict) -> Edge  [L137-144]",
+        "RepoIndex  [L148-176] — The whole deterministic picture: files, the symbols defined in them, and the edges between.",
+        "RepoIndex.to_dict(self) -> dict  [L155-160]",
+        "RepoIndex.from_dict(cls, d: dict) -> RepoIndex  [L163-168]",
+        "RepoIndex.symbols_in(self, file_path: str) -> list[Symbol]  [L172-173]",
+        "RepoIndex.internal_imports(self, file_path: str) -> list[str]  [L175-176]",
+        "Importance  [L184-187]",
+        "PageSource  [L190-196] — Provenance of a page's body. ``SKELETON`` = deterministic stub awaiting an orchestrator;",
+        "PageStatus  [L199-202]",
+        "FileRef  [L206-217] — A page's link to a source file, pinned to the hash it was last narrated against (freshness).",
+        "FileRef.to_dict(self) -> dict  [L212-213]",
+        "FileRef.from_dict(cls, d: dict) -> FileRef  [L216-217]",
+        "Page  [L221-263] — One chapter of the manual: a system/subsystem the human reads. The deterministic core sets",
+        "Page.to_dict(self) -> dict  [L236-248]",
+        "Page.from_dict(cls, d: dict) -> Page  [L251-263]",
+        "Section  [L267-279] — A grouping of pages. ``slug`` is the on-disk folder under ``manual/``.",
+        "Section.to_dict(self) -> dict  [L274-275]",
+        "Section.from_dict(cls, d: dict) -> Section  [L278-279]",
+        "Manual  [L283-308] — The structure index: ordered sections + the flat page map. Persisted to ``manual.json``.",
+        "Manual.to_dict(self) -> dict  [L289-293]",
+        "Manual.from_dict(cls, d: dict) -> Manual  [L296-300]",
+        "Manual.ordered_pages(self) -> list[Page]  [L302-308]",
+        "GenerationTask  [L317-355] — Everything the orchestrator needs to narrate one page, with no hidden state. Emitted by the",
+        "GenerationTask.to_dict(self) -> dict  [L332-342]",
+        "GenerationTask.from_dict(cls, d: dict) -> GenerationTask  [L345-355]"
+      ],
+      "internal_deps": []
+    },
+    {
+      "page_id": "repo_manual.freshness",
+      "title": "repo_manual.freshness",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/freshness.py"
+      ],
+      "related_pages": [
+        "repo_manual.hashing",
+        "repo_manual.model"
+      ],
+      "symbol_outline": [
+        "current_hash(root: Path, relpath: str) -> str | None  [L20-25] — Hash a source file as it exists on disk now, or ``None`` if it no longer exists.",
+        "page_status(root: Path, page: Page) -> PageStatus  [L28-35] — Re-evaluate one page's freshness against the working tree (does not mutate the page).",
+        "refresh(root: Path, manual: Manual) -> dict[str, PageStatus]  [L38-45] — Recompute and write back every page's ``status``. Returns the {page_id: status} map.",
+        "stale_pages(manual: Manual) -> list[Page]  [L48-50] — Pages an orchestrator still owes work on: never narrated (PENDING) or drifted (STALE)."
+      ],
+      "internal_deps": [
+        "src/repo_manual/hashing.py",
+        "src/repo_manual/model.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.hashing",
+      "title": "repo_manual.hashing",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/hashing.py"
+      ],
+      "related_pages": [],
+      "symbol_outline": [
+        "hash_bytes(data: bytes) -> str  [L12-13]",
+        "hash_text(text: str) -> str  [L16-17]",
+        "hash_file(path: Path) -> str  [L20-21]"
+      ],
+      "internal_deps": []
+    },
+    {
+      "page_id": "repo_manual.plan",
+      "title": "repo_manual.plan",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/plan.py"
+      ],
+      "related_pages": [
+        "repo_manual.model"
+      ],
+      "symbol_outline": [
+        "plan_manual(index: RepoIndex) -> Manual  [L40-88] — Build the deterministic manual structure (sections + pages) from a `RepoIndex`.",
+        "System  [L97-116] — One orchestrator-decided system = one page that may span several files.",
+        "System.from_dict(cls, d: dict) -> System  [L108-116]",
+        "Structure  [L120-131]",
+        "Structure.from_dict(cls, d: dict) -> Structure  [L125-131]",
+        "plan_from_structure(index: RepoIndex, structure: Structure) -> tuple[Manual, list[str]]  [L134-184] — Build the manual from authored systems (one page per system). Returns (manual, warnings).",
+        "structure_brief(index: RepoIndex) -> dict  [L187-203] — The grounding an orchestrator needs to DECIDE systems: every file with its module docstring,",
+        "suggested_structure(index: RepoIndex) -> dict  [L206-227] — A deterministic starting point for structure.json (package-based), for the orchestrator to edit",
+        "task_for(index: RepoIndex, manual: Manual, page: Page) -> GenerationTask  [L230-251] — Assemble the orchestrator brief for one page from the index (symbols + internal deps).",
+        "all_tasks(index: RepoIndex, manual: Manual) -> list[GenerationTask]  [L254-255]",
+        "_import_in_degree(index: RepoIndex) -> dict[str, int]  [L263-268]",
+        "_section_of(module: str) -> str  [L271-274]",
+        "_stem(path: str) -> str  [L277-279]",
+        "_trim(text: str, limit: int=110) -> str  [L282-283]",
+        "_importance(path: str, module: str, in_degree: int) -> Importance  [L286-294]",
+        "_overview_page(index: RepoIndex) -> Page  [L297-313] — The 'start here' page. Grounded in the repo's entry points so the narrative can open with how"
+      ],
+      "internal_deps": [
+        "src/repo_manual/model.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.scan",
+      "title": "repo_manual.scan",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/scan/__init__.py"
+      ],
+      "related_pages": [
+        "repo_manual.scan.base"
+      ],
+      "symbol_outline": [],
+      "internal_deps": [
+        "src/repo_manual/scan/base.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.store",
+      "title": "repo_manual.store",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/store.py"
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.freshness",
+        "repo_manual.model",
+        "repo_manual.plan"
+      ],
+      "symbol_outline": [
+        "WriteResult  [L57-61]",
+        "load_structure(config: ManualConfig) -> Structure | None  [L67-72] — Load the orchestrator-authored ``structure.json`` (the AI grouping), if present.",
+        "build_manual(config: ManualConfig, index: RepoIndex) -> tuple[Manual, list[str]]  [L75-80] — Pick the grouping: authored systems (``structure.json``) if present, else the package seed.",
+        "write_structure_brief(config: ManualConfig, index: RepoIndex) -> tuple[Path, Path]  [L83-93] — Write the grouping brief + a deterministic suggested structure for the orchestrator to edit",
+        "init_store(config: ManualConfig) -> Path  [L96-105] — Create ``.repo-manual/`` + config + a short README. Idempotent.",
+        "write_manual(config: ManualConfig, index: RepoIndex, manual: Manual) -> WriteResult  [L108-133] — Write the whole store, preserving any existing narrative + human edits.",
+        "write_index(config: ManualConfig, index: RepoIndex) -> None  [L136-139] — Write just the structural index (``index/*.json``) — used by ``scan`` without touching pages.",
+        "load_manual(config: ManualConfig) -> Manual | None  [L142-146]",
+        "load_index(config: ManualConfig) -> RepoIndex | None  [L149-153] — Load the committed structural index (``index/*.json``), or None if it hasn't been written yet.",
+        "_write_page(config: ManualConfig, index: RepoIndex, manual: Manual, page: Page, prev: Manual | None) -> bool  [L159-199] — Write one page file. Returns True if an existing narrative was preserved (vs a fresh skeleton).",
+        "_render_skeleton(config: ManualConfig, index: RepoIndex, manual: Manual, page: Page) -> str  [L202-247]",
+        "_carry_forward(prev: Manual | None, manual: Manual) -> None  [L253-263] — Copy provenance from the previous manual onto freshly-planned pages so narrated pages keep",
+        "_carry_hashes(prev_page: Page | None, page: Page) -> None  [L266-271]",
+        "ingest_filled_pages(config: ManualConfig, manual: Manual, now: str) -> list[str]  [L277-300] — Detect pages an orchestrator has narrated (pending marker gone from the .md generated region) and",
+        "_rewrite_frontmatter(config: ManualConfig, page: Page) -> None  [L303-316] — Re-emit a page's frontmatter from its (now updated) metadata, preserving both fenced regions.",
+        "_write_index(out: Path, index: RepoIndex) -> None  [L322-326]",
+        "_load_index(config: ManualConfig) -> RepoIndex  [L329-334]",
+        "_write_plan(out: Path, index: RepoIndex, manual: Manual) -> None  [L337-343]",
+        "_write_json(path: Path, data: dict) -> None  [L346-348]",
+        "_page_path(config: ManualConfig, page: Page) -> Path  [L354-355]",
+        "_source_link(config: ManualConfig, page: Page, relpath: str) -> str  [L358-361]",
+        "_relative_page_link(manual: Manual, page: Page, other_page_id: str) -> str  [L364-369] — Link from this page's section folder to another page's file, resolving its section folder.",
+        "_extract_region(text: str, start: str, end: str) -> str | None  [L372-376]",
+        "_frontmatter(page: Page) -> str  [L379-399]",
+        "_yaml_str(s: str) -> str  [L402-404]"
+      ],
+      "internal_deps": [
+        "src/repo_manual/__init__.py",
+        "src/repo_manual/config.py",
+        "src/repo_manual/freshness.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/plan.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.verify",
+      "title": "repo_manual.verify",
+      "section": "repo_manual",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/verify.py"
+      ],
+      "related_pages": [
+        "repo_manual",
+        "repo_manual.config",
+        "repo_manual.model",
+        "repo_manual.store"
+      ],
+      "symbol_outline": [
+        "Violation  [L33-35]",
+        "VerifyReport  [L39-59]",
+        "VerifyReport.has_problems(self) -> bool  [L46-47]",
+        "VerifyReport.format_lines(self) -> list[str]  [L49-59]",
+        "verify_manual(config: ManualConfig, manual: Manual, strict: bool=False) -> VerifyReport  [L62-105]",
+        "_line_count(root: Path, rel: str, cache: dict[str, int | None]) -> int | None  [L108-112]"
+      ],
+      "internal_deps": [
+        "src/repo_manual/__init__.py",
+        "src/repo_manual/config.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/store.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.scan.base",
+      "title": "repo_manual.scan.base",
+      "section": "repo_manual.scan",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/scan/base.py"
+      ],
+      "related_pages": [
+        "repo_manual.config",
+        "repo_manual.model",
+        "repo_manual.scan.python"
+      ],
+      "symbol_outline": [
+        "LanguageAnalyzer  [L15-22] — Static analysis for one language. Implementations must be pure & deterministic: same bytes in,",
+        "LanguageAnalyzer.analyze(self, config: ManualConfig) -> RepoIndex  [L22-22]",
+        "iter_source_files(config: ManualConfig, suffixes: tuple[str, ...]) -> list[Path]  [L25-46] — Walk ``config.source_dirs`` (or the repo root) yielding files with a matching suffix, honoring",
+        "_is_test_path(rel: Path) -> bool  [L49-53]",
+        "get_analyzer(language: str) -> LanguageAnalyzer  [L56-62] — Return the analyzer for ``language`` (currently just Python). Raises on unknown languages."
+      ],
+      "internal_deps": [
+        "src/repo_manual/config.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/scan/python.py"
+      ]
+    },
+    {
+      "page_id": "repo_manual.scan.python",
+      "title": "repo_manual.scan.python",
+      "section": "repo_manual.scan",
+      "importance": "medium",
+      "relevant_files": [
+        "src/repo_manual/scan/python.py"
+      ],
+      "related_pages": [
+        "repo_manual.config",
+        "repo_manual.hashing",
+        "repo_manual.model",
+        "repo_manual.scan.base"
+      ],
+      "symbol_outline": [
+        "_Parsed  [L21-25]",
+        "_ModuleSymbols  [L29-32] — Top-level name -> symbol id, used to resolve calls and `from x import name` bindings.",
+        "PythonAnalyzer  [L35-251]",
+        "PythonAnalyzer.analyze(self, config: ManualConfig) -> RepoIndex  [L39-59]",
+        "PythonAnalyzer._parse_all(self, config: ManualConfig) -> list[_Parsed]  [L63-89]",
+        "PythonAnalyzer._module_name(self, relpath: str, config: ManualConfig) -> str  [L91-102] — ``src/pkg/mod.py`` (source_dir ``src``) -> ``pkg.mod``; ``__init__.py`` -> the package.",
+        "PythonAnalyzer._symbols_for(self, p: _Parsed) -> tuple[list[Symbol], _ModuleSymbols]  [L106-140]",
+        "PythonAnalyzer._def_symbol(self, p: _Parsed, node: ast.AST, qualname: str, kind: SymbolKind) -> Symbol  [L142-156]",
+        "PythonAnalyzer._import_edges(self, p: _Parsed, module_to_file: dict[str, str]) -> list[Edge]  [L160-178]",
+        "PythonAnalyzer._resolve_from_module(self, current_module: str, node: ast.ImportFrom) -> str | None  [L180-190]",
+        "PythonAnalyzer._nearest_internal_file(self, module: str, module_to_file: dict[str, str]) -> str | None  [L192-200] — Map a dotted module to an indexed file, walking up parents (``a.b.c`` -> ``a.b`` -> ``a``).",
+        "PythonAnalyzer._call_edges(self, p: _Parsed, module_to_file: dict[str, str], top_tables: dict[str, _ModuleSymbols]) -> list[Edge]  [L204-239]",
+        "PythonAnalyzer._callables(self, p: _Parsed) -> list[tuple[str, ast.AST]]  [L241-251] — Yield ``(symbol_id, body_node)`` for each function/method whose calls we attribute.",
+        "_signature(node: ast.AST) -> str  [L257-270]",
+        "_callee_name(func: ast.AST) -> str | None  [L273-279] — The simple name being called: ``f()`` -> ``f``; ``obj.method()`` -> ``method``.",
+        "_first_line(text: str) -> str  [L282-284]"
+      ],
+      "internal_deps": [
+        "src/repo_manual/config.py",
+        "src/repo_manual/hashing.py",
+        "src/repo_manual/model.py",
+        "src/repo_manual/scan/base.py"
+      ]
+    }
+  ],
+  "pending_count": 13
+}

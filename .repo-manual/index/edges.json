@@ -1,0 +1,984 @@
+{
+  "edges": [
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst": "src/repo_manual/config.py::ManualConfig",
+      "dst_name": "ManualConfig",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::brief",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::brief",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::brief",
+      "dst": "src/repo_manual/plan.py::task_for",
+      "dst_name": "task_for",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::generate",
+      "dst": "src/repo_manual/cli.py::_analyze",
+      "dst_name": "_analyze",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::generate",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::ingest",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::ingest",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::ingest",
+      "dst": "src/repo_manual/cli.py::_now",
+      "dst_name": "_now",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::init",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::plan",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::plan",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::scan",
+      "dst": "src/repo_manual/cli.py::_analyze",
+      "dst_name": "_analyze",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::scan",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::stale",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::stale",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::structure",
+      "dst": "src/repo_manual/cli.py::_analyze",
+      "dst_name": "_analyze",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::structure",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::verify",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::verify",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::verify",
+      "dst": "src/repo_manual/verify.py::verify_manual",
+      "dst_name": "verify_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/freshness.py::current_hash",
+      "dst": "src/repo_manual/hashing.py::hash_file",
+      "dst_name": "hash_file",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/freshness.py::page_status",
+      "dst": "src/repo_manual/freshness.py::current_hash",
+      "dst_name": "current_hash",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/freshness.py::refresh",
+      "dst": "src/repo_manual/freshness.py::page_status",
+      "dst_name": "page_status",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/hashing.py::hash_file",
+      "dst": "src/repo_manual/hashing.py::hash_bytes",
+      "dst_name": "hash_bytes",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/hashing.py::hash_text",
+      "dst": "src/repo_manual/hashing.py::hash_bytes",
+      "dst_name": "hash_bytes",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/model.py::Edge.from_dict",
+      "dst": "src/repo_manual/model.py::EdgeKind",
+      "dst_name": "EdgeKind",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/model.py::GenerationTask.from_dict",
+      "dst": "src/repo_manual/model.py::Importance",
+      "dst_name": "Importance",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/model.py::Page.from_dict",
+      "dst": "src/repo_manual/model.py::_enum_or",
+      "dst_name": "_enum_or",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/model.py::Symbol.from_dict",
+      "dst": "src/repo_manual/model.py::SymbolKind",
+      "dst_name": "SymbolKind",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::System.from_dict",
+      "dst": "src/repo_manual/model.py::Importance",
+      "dst_name": "Importance",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::_importance",
+      "dst": "src/repo_manual/plan.py::_stem",
+      "dst_name": "_stem",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::_overview_page",
+      "dst": "src/repo_manual/model.py::FileRef",
+      "dst_name": "FileRef",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::_overview_page",
+      "dst": "src/repo_manual/model.py::Page",
+      "dst_name": "Page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::_overview_page",
+      "dst": "src/repo_manual/plan.py::_stem",
+      "dst_name": "_stem",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::all_tasks",
+      "dst": "src/repo_manual/plan.py::task_for",
+      "dst_name": "task_for",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_from_structure",
+      "dst": "src/repo_manual/model.py::FileRef",
+      "dst_name": "FileRef",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_from_structure",
+      "dst": "src/repo_manual/model.py::Manual",
+      "dst_name": "Manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_from_structure",
+      "dst": "src/repo_manual/model.py::Page",
+      "dst_name": "Page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_from_structure",
+      "dst": "src/repo_manual/model.py::Section",
+      "dst_name": "Section",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_from_structure",
+      "dst": "src/repo_manual/plan.py::_overview_page",
+      "dst_name": "_overview_page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/model.py::FileRef",
+      "dst_name": "FileRef",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/model.py::Manual",
+      "dst_name": "Manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/model.py::Page",
+      "dst_name": "Page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/model.py::Section",
+      "dst_name": "Section",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/plan.py::_import_in_degree",
+      "dst_name": "_import_in_degree",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/plan.py::_importance",
+      "dst_name": "_importance",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/plan.py::_overview_page",
+      "dst_name": "_overview_page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/plan.py::_section_of",
+      "dst_name": "_section_of",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::plan_manual",
+      "dst": "src/repo_manual/plan.py::_stem",
+      "dst_name": "_stem",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::structure_brief",
+      "dst": "src/repo_manual/plan.py::_stem",
+      "dst_name": "_stem",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::suggested_structure",
+      "dst": "src/repo_manual/plan.py::plan_manual",
+      "dst_name": "plan_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::task_for",
+      "dst": "src/repo_manual/model.py::GenerationTask",
+      "dst_name": "GenerationTask",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/plan.py::task_for",
+      "dst": "src/repo_manual/plan.py::_trim",
+      "dst_name": "_trim",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/base.py::get_analyzer",
+      "dst": "src/repo_manual/scan/python.py::PythonAnalyzer",
+      "dst_name": "PythonAnalyzer",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/base.py::iter_source_files",
+      "dst": "src/repo_manual/scan/base.py::_is_test_path",
+      "dst_name": "_is_test_path",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._call_edges",
+      "dst": "src/repo_manual/model.py::Edge",
+      "dst_name": "Edge",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._call_edges",
+      "dst": "src/repo_manual/scan/python.py::_ModuleSymbols",
+      "dst_name": "_ModuleSymbols",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._call_edges",
+      "dst": "src/repo_manual/scan/python.py::_callee_name",
+      "dst_name": "_callee_name",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._def_symbol",
+      "dst": "src/repo_manual/model.py::Symbol",
+      "dst_name": "Symbol",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._def_symbol",
+      "dst": "src/repo_manual/scan/python.py::_first_line",
+      "dst_name": "_first_line",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._def_symbol",
+      "dst": "src/repo_manual/scan/python.py::_signature",
+      "dst_name": "_signature",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._import_edges",
+      "dst": "src/repo_manual/model.py::Edge",
+      "dst_name": "Edge",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._parse_all",
+      "dst": "src/repo_manual/hashing.py::hash_text",
+      "dst_name": "hash_text",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._parse_all",
+      "dst": "src/repo_manual/model.py::SourceFile",
+      "dst_name": "SourceFile",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._parse_all",
+      "dst": "src/repo_manual/scan/base.py::iter_source_files",
+      "dst_name": "iter_source_files",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._parse_all",
+      "dst": "src/repo_manual/scan/python.py::_Parsed",
+      "dst_name": "_Parsed",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._symbols_for",
+      "dst": "src/repo_manual/model.py::Symbol",
+      "dst_name": "Symbol",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._symbols_for",
+      "dst": "src/repo_manual/scan/python.py::_ModuleSymbols",
+      "dst_name": "_ModuleSymbols",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer._symbols_for",
+      "dst": "src/repo_manual/scan/python.py::_first_line",
+      "dst_name": "_first_line",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/scan/python.py::PythonAnalyzer.analyze",
+      "dst": "src/repo_manual/model.py::RepoIndex",
+      "dst_name": "RepoIndex",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_carry_forward",
+      "dst": "src/repo_manual/store.py::_carry_hashes",
+      "dst_name": "_carry_hashes",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_frontmatter",
+      "dst": "src/repo_manual/store.py::_yaml_str",
+      "dst_name": "_yaml_str",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_render_skeleton",
+      "dst": "src/repo_manual/plan.py::task_for",
+      "dst_name": "task_for",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_render_skeleton",
+      "dst": "src/repo_manual/store.py::_relative_page_link",
+      "dst_name": "_relative_page_link",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_render_skeleton",
+      "dst": "src/repo_manual/store.py::_source_link",
+      "dst_name": "_source_link",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_rewrite_frontmatter",
+      "dst": "src/repo_manual/store.py::_extract_region",
+      "dst_name": "_extract_region",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_rewrite_frontmatter",
+      "dst": "src/repo_manual/store.py::_frontmatter",
+      "dst_name": "_frontmatter",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_rewrite_frontmatter",
+      "dst": "src/repo_manual/store.py::_page_path",
+      "dst_name": "_page_path",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_source_link",
+      "dst": "src/repo_manual/store.py::_page_path",
+      "dst_name": "_page_path",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_index",
+      "dst": "src/repo_manual/store.py::_write_json",
+      "dst_name": "_write_json",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_page",
+      "dst": "src/repo_manual/store.py::_carry_hashes",
+      "dst_name": "_carry_hashes",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_page",
+      "dst": "src/repo_manual/store.py::_extract_region",
+      "dst_name": "_extract_region",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_page",
+      "dst": "src/repo_manual/store.py::_frontmatter",
+      "dst_name": "_frontmatter",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_page",
+      "dst": "src/repo_manual/store.py::_page_path",
+      "dst_name": "_page_path",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_page",
+      "dst": "src/repo_manual/store.py::_render_skeleton",
+      "dst_name": "_render_skeleton",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_plan",
+      "dst": "src/repo_manual/plan.py::all_tasks",
+      "dst_name": "all_tasks",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::_write_plan",
+      "dst": "src/repo_manual/store.py::_write_json",
+      "dst_name": "_write_json",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::build_manual",
+      "dst": "src/repo_manual/plan.py::plan_from_structure",
+      "dst_name": "plan_from_structure",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::build_manual",
+      "dst": "src/repo_manual/plan.py::plan_manual",
+      "dst_name": "plan_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::build_manual",
+      "dst": "src/repo_manual/store.py::load_structure",
+      "dst_name": "load_structure",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_extract_region",
+      "dst_name": "_extract_region",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_load_index",
+      "dst_name": "_load_index",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_page_path",
+      "dst_name": "_page_path",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_rewrite_frontmatter",
+      "dst_name": "_rewrite_frontmatter",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_write_json",
+      "dst_name": "_write_json",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/store.py::_write_plan",
+      "dst_name": "_write_plan",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::load_index",
+      "dst": "src/repo_manual/store.py::_load_index",
+      "dst_name": "_load_index",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_index",
+      "dst": "src/repo_manual/store.py::_write_index",
+      "dst_name": "_write_index",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::WriteResult",
+      "dst_name": "WriteResult",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::_carry_forward",
+      "dst_name": "_carry_forward",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::_write_index",
+      "dst_name": "_write_index",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::_write_json",
+      "dst_name": "_write_json",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::_write_page",
+      "dst_name": "_write_page",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::_write_plan",
+      "dst_name": "_write_plan",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_manual",
+      "dst": "src/repo_manual/store.py::load_manual",
+      "dst_name": "load_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_structure_brief",
+      "dst": "src/repo_manual/plan.py::structure_brief",
+      "dst_name": "structure_brief",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_structure_brief",
+      "dst": "src/repo_manual/plan.py::suggested_structure",
+      "dst_name": "suggested_structure",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::write_structure_brief",
+      "dst": "src/repo_manual/store.py::_write_json",
+      "dst_name": "_write_json",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/verify.py::verify_manual",
+      "dst": "src/repo_manual/verify.py::VerifyReport",
+      "dst_name": "VerifyReport",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/verify.py::verify_manual",
+      "dst": "src/repo_manual/verify.py::Violation",
+      "dst_name": "Violation",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/verify.py::verify_manual",
+      "dst": "src/repo_manual/verify.py::_line_count",
+      "dst_name": "_line_count",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/__init__.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/config.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/freshness.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/plan.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/scan/__init__.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/store.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/verify.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/freshness.py",
+      "dst": "src/repo_manual/hashing.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/freshness.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/plan.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/__init__.py",
+      "dst": "src/repo_manual/scan/base.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/base.py",
+      "dst": "src/repo_manual/config.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/base.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/base.py",
+      "dst": "src/repo_manual/scan/python.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/python.py",
+      "dst": "src/repo_manual/config.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/python.py",
+      "dst": "src/repo_manual/hashing.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/python.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/scan/python.py",
+      "dst": "src/repo_manual/scan/base.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/__init__.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/config.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/freshness.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/plan.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/verify.py",
+      "dst": "src/repo_manual/__init__.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/verify.py",
+      "dst": "src/repo_manual/config.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/verify.py",
+      "dst": "src/repo_manual/model.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/verify.py",
+      "dst": "src/repo_manual/store.py",
+      "dst_name": "",
+      "resolved": true
+    }
+  ]
+}

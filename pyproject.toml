@@ -1,5 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "repo-manual"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = []
+# The deterministic core (steps 1-6) has no runtime deps beyond the stdlib + Typer.
+# The LLM narrative is handled by the *orchestrator* that runs this tool (docs/architecture.md §5),
+# not by a library dependency here.
+dependencies = [
+    "typer>=0.26.7",
+]
+
+[project.scripts]
+repo-manual = "repo_manual.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/repo_manual"]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "ruff>=0.15.16",
+]

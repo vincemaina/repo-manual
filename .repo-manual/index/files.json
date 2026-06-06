@@ -1,0 +1,76 @@
+{
+  "files": [
+    {
+      "path": "src/repo_manual/__init__.py",
+      "language": "python",
+      "content_hash": "sha256:7414e658f2c4afe6f7e175c0995a5b0c2284ff8b690ad32e0396579ea267a3e1",
+      "line_count": 9
+    },
+    {
+      "path": "src/repo_manual/cli.py",
+      "language": "python",
+      "content_hash": "sha256:967ea013df243e13df82029e9d481048bdf2df2b23a82ca1fa9d87758feca676",
+      "line_count": 321
+    },
+    {
+      "path": "src/repo_manual/config.py",
+      "language": "python",
+      "content_hash": "sha256:0ad652430c3fe1c918f8d8c4c5282361ccd23261c2a1e5a344757549d0412363",
+      "line_count": 77
+    },
+    {
+      "path": "src/repo_manual/freshness.py",
+      "language": "python",
+      "content_hash": "sha256:723bb2affba460ce099663c988a71a9d17c87bbe315b51cbd3632469d9009368",
+      "line_count": 51
+    },
+    {
+      "path": "src/repo_manual/hashing.py",
+      "language": "python",
+      "content_hash": "sha256:ee13720064006088e8ea90e98251a4159cc11a60bba706ae9649c913f0c3492d",
+      "line_count": 22
+    },
+    {
+      "path": "src/repo_manual/model.py",
+      "language": "python",
+      "content_hash": "sha256:9ba544a8b497d2dab6ddec95e59e8c3bab608c9ef0e1bfb58d6bfbd45c9d3cc9",
+      "line_count": 356
+    },
+    {
+      "path": "src/repo_manual/plan.py",
+      "language": "python",
+      "content_hash": "sha256:ea260e2dab4ca5f0afe93ed4ce2b98d3b1c46a99439cc59a726078a788b45f7d",
+      "line_count": 314
+    },
+    {
+      "path": "src/repo_manual/scan/__init__.py",
+      "language": "python",
+      "content_hash": "sha256:f395e3ab6e03e97faefad3f21f990205ea33463c055a52685e90431281763b5b",
+      "line_count": 7
+    },
+    {
+      "path": "src/repo_manual/scan/base.py",
+      "language": "python",
+      "content_hash": "sha256:7dc8b774849b0956766d97fb818b7e8cfb6369c257fa79ed5a52ba3f6de4e131",
+      "line_count": 63
+    },
+    {
+      "path": "src/repo_manual/scan/python.py",
+      "language": "python",
+      "content_hash": "sha256:808eaa9716e7632741624443f3d8db6610f97c281ad356b55a06dc2831ec40fb",
+      "line_count": 285
+    },
+    {
+      "path": "src/repo_manual/store.py",
+      "language": "python",
+      "content_hash": "sha256:9f41b3db2620c4460cd7f2aa608ccb17f716bc128b4873da8e0868c9af66bc9e",
+      "line_count": 423
+    },
+    {
+      "path": "src/repo_manual/verify.py",
+      "language": "python",
+      "content_hash": "sha256:52e299c579067a23453c80ff94898b6debf8bc922fe7840e3086acaf0aaafba7",
+      "line_count": 113
+    }
+  ]
+}
