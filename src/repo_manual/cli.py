@@ -320,6 +320,7 @@ def serve(
 ) -> None:
     """Serve an interactive browser view of the manual: sidebar nav by system, rendered Markdown +
     Mermaid, freshness badges, and drill-down to each system's functions. Stdlib server, no new deps."""
+    import errno
     import functools
     import http.server
     import socketserver
@@ -332,16 +333,37 @@ def serve(
         raise typer.Exit(_no_manual())
     write_viewer(config)
 
+    class _Server(socketserver.TCPServer):
+        allow_reuse_address = True  # don't trip over a just-stopped server stuck in TIME_WAIT
+
     # Serve from the repo root so the viewer reaches both .repo-manual/ and the source files it links to.
     handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(config.root))
-    url = f"http://127.0.0.1:{port}/{config.output_dir}/{VIEWER_NAME}"
+    httpd = None
+    for candidate in range(port, port + 20):  # a busy port shouldn't crash — find the next free one
+        try:
+            httpd = _Server(("127.0.0.1", candidate), handler)
+            break
+        except OSError as e:
+            if e.errno != errno.EADDRINUSE:
+                raise
+    if httpd is None:
+        typer.secho(
+            f"No free port in {port}..{port + 19}. Free one up or pass --port.",
+            fg=typer.colors.RED, err=True,
+        )
+        raise typer.Exit(1)
+
+    actual = httpd.server_address[1]
+    if actual != port:
+        typer.secho(f"port {port} was busy — using {actual} instead", fg=typer.colors.YELLOW)
+    url = f"http://127.0.0.1:{actual}/{config.output_dir}/{VIEWER_NAME}"
     typer.echo(f"Serving the manual at {url}\n(Ctrl-C to stop)")
     if open_browser:
         try:
             webbrowser.open(url)
         except Exception:  # noqa: BLE001 - headless / no browser is fine
             pass
-    with socketserver.TCPServer(("127.0.0.1", port), handler) as httpd:
+    with httpd:
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
