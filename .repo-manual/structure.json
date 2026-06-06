@@ -1,0 +1,63 @@
+{
+  "overview": {
+    "description": "repo-manual turns a codebase into a committed, AI-written / human-read orientation manual: scan the source into a structural index, group files into systems, write Markdown pages an orchestrator (the agent running the tool) narrates, and track freshness so the manual never quietly rots. No bundled LLM — the agent IS the narrator."
+  },
+  "systems": [
+    {
+      "id": "data-model",
+      "title": "① Data Model & Config",
+      "importance": "high",
+      "description": "The vocabulary everything speaks: the structural index IR (files/symbols/edges), the manual structure (sections/pages), the GenerationTask brief, and the committed config. Tolerant parsing so older artifacts degrade gracefully.",
+      "files": ["src/repo_manual/model.py", "src/repo_manual/config.py"],
+      "related": ["scanning", "planning", "store-freshness"]
+    },
+    {
+      "id": "scanning",
+      "title": "② Scanning — the grounding",
+      "importance": "high",
+      "description": "Turn source into a deterministic RepoIndex: an ast analyzer behind a pluggable LanguageAnalyzer protocol (symbols, internal imports, resolved-only call edges — never guessed), plus content hashing. This is the grounding the narrative is held to.",
+      "files": ["src/repo_manual/scan/base.py", "src/repo_manual/scan/python.py", "src/repo_manual/scan/__init__.py", "src/repo_manual/hashing.py"],
+      "related": ["data-model", "planning"]
+    },
+    {
+      "id": "planning",
+      "title": "③ Planning & Grouping",
+      "importance": "medium",
+      "description": "Carve the index into the pages a human reads — AI systems from structure.json, or a deterministic package seed — and assemble each page's GenerationTask (files + symbol outline + deps).",
+      "files": ["src/repo_manual/plan.py"],
+      "related": ["data-model", "scanning", "store-freshness"]
+    },
+    {
+      "id": "store-freshness",
+      "title": "④ Store & Freshness — the wedge",
+      "importance": "high",
+      "description": "Write (and safely re-write) the committed .repo-manual/ folder: per-page Markdown with fenced generated + human regions, content-preserving merge, and content-hash drift detection. Narrative and human notes survive regeneration; only stale pages are rewritten.",
+      "files": ["src/repo_manual/store.py", "src/repo_manual/freshness.py"],
+      "related": ["planning", "verification", "cli"]
+    },
+    {
+      "id": "verification",
+      "title": "⑤ Verification — the trust gate",
+      "importance": "medium",
+      "description": "Check, deterministically and with no LLM, that every source citation in a narrated page resolves to a real file and an in-bounds line range. Catches the fabricated or drifted references that sink AI doc tools.",
+      "files": ["src/repo_manual/verify.py"],
+      "related": ["store-freshness", "cli"]
+    },
+    {
+      "id": "cli",
+      "title": "⑥ CLI",
+      "importance": "medium",
+      "description": "The command surface that wires the systems into the workflow: scan / structure / generate / plan / brief / ingest / stale / verify / hook / serve. The orchestration seam lives here.",
+      "files": ["src/repo_manual/cli.py"],
+      "related": ["store-freshness", "verification", "scanning", "viewer"]
+    },
+    {
+      "id": "viewer",
+      "title": "⑦ Viewer",
+      "importance": "medium",
+      "description": "A no-build, browser-based view of the committed manual: a single static page (CDN marked + mermaid + cytoscape) over the JSON the tool already emits — sidebar nav, rendered pages, function drill-down, and an interactive import/call graph with blast-radius highlighting.",
+      "files": ["src/repo_manual/viewer.py"],
+      "related": ["cli", "data-model"]
+    }
+  ]
+}

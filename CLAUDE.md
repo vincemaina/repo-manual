@@ -22,10 +22,18 @@ The full loop works with **no bundled LLM** — the agent running the tool is th
 - `verify [--strict]` — **trust gate**: check every `Sources: [file:Ls-Le]` citation resolves to a real
   file + line range (catches fabricated/drifted references). No LLM.
 - `hook [--install]` — print/install a pre-commit drift + citation check (`stale --check` + `verify`).
+- `serve [--port]` — interactive browser viewer (`viewer.py`): a single no-build `index.html` (CDN
+  marked + mermaid + cytoscape) over `manual.json` + `index/symbols.json` + `index/edges.json`, served by
+  stdlib `http.server` from the repo root. **Zero new Python deps.** Two views: (1) Manual — sidebar nav
+  by system, rendered Markdown + Mermaid, freshness badges, function drill-down with source links; (2)
+  Graph — interactive cytoscape import/call graph, colour-by-system, click a node for blast-radius
+  highlight + jump-to-page.
 
-Build/lint/test: `uv sync`, `uv run pytest` (23 tests), `uv run ruff check src tests`. Note: page
-metadata enums parse tolerantly (`model._enum_or`) so an older/edited `.repo-manual` degrades gracefully
-rather than crashing the load.
+Build/lint/test: `uv sync`, `uv run pytest` (26 tests), `uv run ruff check src tests`. Notes: page
+metadata enums parse tolerantly (`model._enum_or`) so an older/edited `.repo-manual` degrades gracefully;
+each page stores a `body_hash` of its narrated region so `ingest` re-pins a **STALE** page back to FRESH
+only when its prose was actually rewritten (not just any narrated page) — that's what makes the
+edit-code → refresh-page → fresh loop work, not only first-time skeleton fills.
 
 **Flagship artifact:** `../dbt-test-lineage/.repo-manual/` is a complete, AI-grouped (5 systems +
 overview), fully-narrated, citation-verified manual — the reference for what good output looks like.

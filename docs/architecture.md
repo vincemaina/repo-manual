@@ -106,12 +106,15 @@ views/ — cli (Typer) · open (minimal local web, later) · ai adapter (later, 
 **Steps 1–6 are the deterministic harness — fully buildable & testable here with no LLM.** Step 7 plugs
 in the recipe behind the provider adapter and is where the manual gets its narrative.
 
-> **Status (2026-06-06): working end-to-end.** `src/repo_manual/` ships the analyzer, planner (package
-> seed **and** AI system-grouping via `structure.json`), store, freshness, citation **verify**, and CLI
-> (`scan`/`structure`/`generate`/`plan`/`stale`/`ingest`/`verify`); 21 tests pass. The agent-as-orchestrator
-> loop is proven: `../dbt-test-lineage/.repo-manual/` is a complete, AI-grouped, fully-narrated,
-> citation-verified manual (5 systems + overview; 62 citations resolve under `--strict`). Still deferred:
-> an **autonomous** `claude -p`/API provider for headless CI runs (§5) — the only remaining piece.
+> **Status (2026-06-06): working end-to-end, with an interactive viewer.** `src/repo_manual/` ships the
+> analyzer, planner (package seed **and** AI system-grouping via `structure.json`), store, freshness,
+> citation **verify**, the **`serve` viewer** (nav + Markdown/Mermaid + function drill-down + an
+> interactive cytoscape import/call graph with blast-radius), `brief`, and the `stale --check`/`hook`
+> drift gate; 26 tests pass. **Two fully-narrated, citation-verified flagships:** `../dbt-test-lineage`
+> (5 systems, 62 citations) and repo-manual self-documenting (7 systems, 61 citations). Each page carries
+> a `body_hash` so `ingest` re-pins a stale page to fresh only when its prose was actually rewritten.
+> Still deferred: an **autonomous** `claude -p`/API provider for headless CI runs (§5) — the only
+> remaining piece.
 
 1. **Scaffold** — `uv` project, `src/repo_manual/`, Typer CLI entrypoint, ruff/pytest.
 2. **IR + config** (`model.py`, `config.py`) — `SourceFile`/`Symbol`/`Edge`/`ManualConfig` + JSON.

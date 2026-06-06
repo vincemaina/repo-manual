@@ -103,6 +103,27 @@ def test_source_change_marks_stale(config):
     assert "sample.a" in {p.id for p in freshness.stale_pages(manual)}
 
 
+def test_stale_page_returns_to_fresh_after_rewrite(config):
+    _generate(config)
+    page = _page_file(config, "sample.a", "sample")
+    _fill_page(page, "# a\n\nOriginal narrative.")
+    store.ingest_filled_pages(config, store.load_manual(config), now="t0")
+
+    # drift the source -> stale
+    src = config.root / "src" / "sample" / "a.py"
+    src.write_text(src.read_text() + "\n# changed\n")
+    assert freshness.refresh(config.root, store.load_manual(config))["sample.a"] is PageStatus.STALE
+
+    # ingest WITHOUT rewriting must NOT mark it fresh (the prose wasn't updated)
+    assert store.ingest_filled_pages(config, store.load_manual(config), now="t1") == []
+    assert freshness.refresh(config.root, store.load_manual(config))["sample.a"] is PageStatus.STALE
+
+    # rewrite the page, then ingest -> re-pinned to FRESH
+    _fill_page(page, "# a\n\nUpdated narrative covering the change.")
+    assert store.ingest_filled_pages(config, store.load_manual(config), now="t2") == ["sample.a"]
+    assert freshness.refresh(config.root, store.load_manual(config))["sample.a"] is PageStatus.FRESH
+
+
 def test_deleted_source_is_stale_not_crash(config):
     _generate(config)
     page = _page_file(config, "sample.a", "sample")

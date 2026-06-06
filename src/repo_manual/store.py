@@ -22,6 +22,7 @@ from pathlib import Path
 
 from repo_manual import freshness
 from repo_manual.config import ManualConfig
+from repo_manual.hashing import hash_text
 from repo_manual.model import (
     GenerationTask,
     Manual,
@@ -260,6 +261,7 @@ def _carry_forward(prev: Manual | None, manual: Manual) -> None:
         if prev_page and prev_page.source is not PageSource.SKELETON:
             page.source = prev_page.source
             page.generated_at = prev_page.generated_at
+            page.body_hash = prev_page.body_hash
             _carry_hashes(prev_page, page)
 
 
@@ -275,9 +277,11 @@ def _carry_hashes(prev_page: Page | None, page: Page) -> None:
 
 
 def ingest_filled_pages(config: ManualConfig, manual: Manual, now: str) -> list[str]:
-    """Detect pages an orchestrator has narrated (pending marker gone from the .md generated region) and
-    promote them to GENERATED: stamp ``relevant_files`` with current hashes + ``generated_at``. Returns
-    the ids promoted. This is the seam where agent-written prose re-enters freshness tracking."""
+    """Pin freshness for pages the orchestrator has (re)narrated. A page is (re)pinned when its generated
+    region is real (pending marker gone) AND either it was a skeleton or its region changed since the last
+    pin (``body_hash`` differs). Pinning stamps current source hashes + ``generated_at`` + the new
+    ``body_hash``. This is the seam where agent-written prose re-enters freshness tracking — and it's what
+    lets a STALE page return to FRESH after you rewrite it (not just newly-filled skeletons)."""
     promoted: list[str] = []
     for page in manual.ordered_pages():
         path = _page_path(config, page)
@@ -285,9 +289,14 @@ def ingest_filled_pages(config: ManualConfig, manual: Manual, now: str) -> list[
             continue
         gen = _extract_region(path.read_text(), GEN_START, GEN_END)
         narrated = gen is not None and gen.strip() != "" and PENDING_MARKER not in gen
-        if narrated and page.source is PageSource.SKELETON:
+        if not narrated:
+            continue
+        body_hash = hash_text(gen.strip())
+        rewritten = page.source is PageSource.SKELETON or body_hash != page.body_hash
+        if rewritten:
             page.source = PageSource.GENERATED
             page.generated_at = now
+            page.body_hash = body_hash
             for ref in page.relevant_files:
                 ref.hash = freshness.current_hash(config.root, ref.path) or ""
             promoted.append(page.id)

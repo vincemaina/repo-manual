@@ -9,8 +9,8 @@
     {
       "path": "src/repo_manual/cli.py",
       "language": "python",
-      "content_hash": "sha256:967ea013df243e13df82029e9d481048bdf2df2b23a82ca1fa9d87758feca676",
-      "line_count": 321
+      "content_hash": "sha256:534bdcd664051acffe03d274108a27a47c0f5fb497e9b7dc3e064b22fcffdb1d",
+      "line_count": 358
     },
     {
       "path": "src/repo_manual/config.py",
@@ -33,8 +33,8 @@
     {
       "path": "src/repo_manual/model.py",
       "language": "python",
-      "content_hash": "sha256:9ba544a8b497d2dab6ddec95e59e8c3bab608c9ef0e1bfb58d6bfbd45c9d3cc9",
-      "line_count": 356
+      "content_hash": "sha256:19b26cd0e20ac84b6b4d7e9f762765900812b5079e1c0f5096a26a83dab460d0",
+      "line_count": 359
     },
     {
       "path": "src/repo_manual/plan.py",
@@ -63,14 +63,20 @@
     {
       "path": "src/repo_manual/store.py",
       "language": "python",
-      "content_hash": "sha256:9f41b3db2620c4460cd7f2aa608ccb17f716bc128b4873da8e0868c9af66bc9e",
-      "line_count": 423
+      "content_hash": "sha256:1c5b1c930279fa6e17f46e060480c36f2764c75fbae2757184dc7a5bfbc71cba",
+      "line_count": 432
     },
     {
       "path": "src/repo_manual/verify.py",
       "language": "python",
       "content_hash": "sha256:52e299c579067a23453c80ff94898b6debf8bc922fe7840e3086acaf0aaafba7",
       "line_count": 113
+    },
+    {
+      "path": "src/repo_manual/viewer.py",
+      "language": "python",
+      "content_hash": "sha256:748f1df0f9da5612ac248e14f7932b57ea1abb1245ff86de0a0c07a772b5622f",
+      "line_count": 301
     }
   ]
 }

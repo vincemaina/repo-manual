@@ -100,6 +100,27 @@
     },
     {
       "kind": "calls",
+      "src": "src/repo_manual/cli.py::serve",
+      "dst": "src/repo_manual/cli.py::_load_or_init_config",
+      "dst_name": "_load_or_init_config",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::serve",
+      "dst": "src/repo_manual/cli.py::_no_manual",
+      "dst_name": "_no_manual",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/cli.py::serve",
+      "dst": "src/repo_manual/viewer.py::write_viewer",
+      "dst_name": "write_viewer",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
       "src": "src/repo_manual/cli.py::stale",
       "dst": "src/repo_manual/cli.py::_load_or_init_config",
       "dst_name": "_load_or_init_config",
@@ -640,6 +661,13 @@
     {
       "kind": "calls",
       "src": "src/repo_manual/store.py::ingest_filled_pages",
+      "dst": "src/repo_manual/hashing.py::hash_text",
+      "dst_name": "hash_text",
+      "resolved": true
+    },
+    {
+      "kind": "calls",
+      "src": "src/repo_manual/store.py::ingest_filled_pages",
       "dst": "src/repo_manual/store.py::_extract_region",
       "dst_name": "_extract_region",
       "resolved": true
@@ -842,6 +870,13 @@
     },
     {
       "kind": "imports",
+      "src": "src/repo_manual/cli.py",
+      "dst": "src/repo_manual/viewer.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
       "src": "src/repo_manual/freshness.py",
       "dst": "src/repo_manual/hashing.py",
       "dst_name": "",
@@ -941,6 +976,13 @@
     {
       "kind": "imports",
       "src": "src/repo_manual/store.py",
+      "dst": "src/repo_manual/hashing.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/store.py",
       "dst": "src/repo_manual/model.py",
       "dst_name": "",
       "resolved": true
@@ -977,6 +1019,13 @@
       "kind": "imports",
       "src": "src/repo_manual/verify.py",
       "dst": "src/repo_manual/store.py",
+      "dst_name": "",
+      "resolved": true
+    },
+    {
+      "kind": "imports",
+      "src": "src/repo_manual/viewer.py",
+      "dst": "src/repo_manual/config.py",
       "dst_name": "",
       "resolved": true
     }

@@ -170,3 +170,34 @@ def test_brief_outputs_grounding(config):
     assert "src/sample/b.py" in result.stdout
     assert "process" in result.stdout  # a symbol to cover
     assert "Sources:" in result.stdout  # the citation rule is stated
+
+
+def test_viewer_written_and_self_contained(config):
+    from repo_manual.viewer import VIEWER_NAME, write_viewer
+
+    _build_seed(config)
+    write_viewer(config)
+    html = (config.output_path / VIEWER_NAME).read_text()
+    # it's a real page that fetches the data the tool emits, with no Python/server templating
+    assert "<!doctype html>" in html.lower()
+    for hook in ("manual.json", "index/symbols.json", "index/edges.json", "index/files.json"):
+        assert hook in html, hook
+    assert "mermaid" in html and "cytoscape" in html
+
+
+def test_graph_data_contract(config):
+    """Audit the graph's inputs: every edge endpoint resolves to a real node, and every file reaches a
+    page — so the rendered graph has no dangling nodes and every node can navigate to its page."""
+    index = _index(config)
+    manual, _ = store.build_manual(config, index)
+
+    file_ids = {f.path for f in index.files}
+    symbol_ids = {s.id for s in index.symbols}
+    for e in index.edges:
+        if e.kind.value == "imports":
+            assert e.src in file_ids and e.dst in file_ids, e
+        else:  # calls
+            assert e.src in symbol_ids and e.dst in symbol_ids, e
+
+    paged_files = {r.path for p in manual.pages.values() for r in p.relevant_files}
+    assert file_ids <= paged_files  # every file is reachable from some page (click-to-navigate works)

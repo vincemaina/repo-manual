@@ -232,6 +232,7 @@ class Page:
     source: PageSource = PageSource.SKELETON
     status: PageStatus = PageStatus.PENDING
     generated_at: str | None = None
+    body_hash: str = ""  # hash of the narrated region at its last pin — lets ingest detect a rewrite
 
     def to_dict(self) -> dict:
         return {
@@ -245,6 +246,7 @@ class Page:
             "source": self.source.value,
             "status": self.status.value,
             "generated_at": self.generated_at,
+            "body_hash": self.body_hash,
         }
 
     @classmethod
@@ -260,6 +262,7 @@ class Page:
             source=_enum_or(PageSource, d.get("source"), PageSource.SKELETON),
             status=_enum_or(PageStatus, d.get("status"), PageStatus.PENDING),
             generated_at=d.get("generated_at"),
+            body_hash=d.get("body_hash", ""),
         )
 
 

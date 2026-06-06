@@ -12,6 +12,7 @@ Commands:
 * ``stale``     — list (or ``--check`` gate) pages that drifted or were never narrated.
 * ``verify``    — the trust gate: every source citation resolves to a real file + line range.
 * ``hook``      — print/install a pre-commit drift + citation check.
+* ``serve``     — interactive browser view (nav by system, Mermaid, function drill-down). No new deps.
 
 See docs/architecture.md §5 for the orchestration model.
 """
@@ -309,6 +310,42 @@ _HOOK_SNIPPET = """\
 repo-manual stale --check || exit 1
 repo-manual verify || exit 1
 """
+
+
+@app.command()
+def serve(
+    path: str = typer.Argument(".", help="Repo root."),
+    port: int = typer.Option(8000, "--port", "-p", help="Port to serve on."),
+    open_browser: bool = typer.Option(True, "--open/--no-open", help="Open a browser tab."),
+) -> None:
+    """Serve an interactive browser view of the manual: sidebar nav by system, rendered Markdown +
+    Mermaid, freshness badges, and drill-down to each system's functions. Stdlib server, no new deps."""
+    import functools
+    import http.server
+    import socketserver
+    import webbrowser
+
+    from repo_manual.viewer import VIEWER_NAME, write_viewer
+
+    config = _load_or_init_config(path)
+    if store.load_manual(config) is None:
+        raise typer.Exit(_no_manual())
+    write_viewer(config)
+
+    # Serve from the repo root so the viewer reaches both .repo-manual/ and the source files it links to.
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(config.root))
+    url = f"http://127.0.0.1:{port}/{config.output_dir}/{VIEWER_NAME}"
+    typer.echo(f"Serving the manual at {url}\n(Ctrl-C to stop)")
+    if open_browser:
+        try:
+            webbrowser.open(url)
+        except Exception:  # noqa: BLE001 - headless / no browser is fine
+            pass
+    with socketserver.TCPServer(("127.0.0.1", port), handler) as httpd:
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            typer.echo("\nstopped")
 
 
 def _no_manual() -> int:
