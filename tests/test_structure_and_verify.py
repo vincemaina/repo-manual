@@ -182,7 +182,11 @@ def test_viewer_written_and_self_contained(config):
     assert "<!doctype html>" in html.lower()
     for hook in ("manual.json", "index/symbols.json", "index/edges.json", "index/files.json"):
         assert hook in html, hook
-    assert "mermaid" in html and "cytoscape" in html
+    # markdown, diagrams, graph, and syntax-highlighted source viewing are all wired
+    assert "mermaid" in html and "cytoscape" in html and "highlight.js" in html
+    assert "openSource" in html and "hljs.highlightElement" in html
+    # real history-API routing (not just hash mutation)
+    assert "history.pushState" in html and "popstate" in html
 
 
 def test_graph_data_contract(config):

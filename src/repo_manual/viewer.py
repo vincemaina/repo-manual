@@ -2,12 +2,14 @@
 interactive site. It is a thin, read-only client over data the tool already emits:
 
 * ``manual.json``        — the systems/pages tree (sidebar nav),
-* ``index/symbols.json`` — the function/class drill-down,
-* ``index/edges.json``   — the import/call graph (Phase 2),
-* the narrated Markdown + Mermaid pages.
+* ``index/symbols.json`` — the function/class drill-down + per-symbol line ranges,
+* ``index/edges.json``   — the import/call graph,
+* the narrated Markdown + Mermaid pages,
+* the source files themselves — shown with syntax highlighting and jump-to-symbol line ranges.
 
-No Python deps (stdlib ``http.server`` serves it); Markdown, Mermaid, and the graph (cytoscape) render
-client-side via CDN libraries. Customisable because it's plain HTML/CSS/JS.
+No Python deps (stdlib ``http.server`` serves it); Markdown (marked), Mermaid, the graph (cytoscape), and
+source highlighting (highlight.js) all render client-side via CDN libraries. Customisable because it's
+plain HTML/CSS/JS. Navigation uses the History API, so browser Back/Forward move between pages.
 """
 
 from __future__ import annotations
@@ -19,7 +21,7 @@ VIEWER_NAME = "index.html"
 
 def write_viewer(config: ManualConfig) -> None:
     """Write the viewer page into the output dir. Served at ``/<output>/index.html`` from the repo root,
-    so the viewer can fetch its data (``manual.json``, ``index/*.json``) and link to source files."""
+    so the viewer can fetch its data (``manual.json``, ``index/*.json``) and the source files it shows."""
     config.output_path.mkdir(parents=True, exist_ok=True)
     (config.output_path / VIEWER_NAME).write_text(_VIEWER_HTML)
 
@@ -30,8 +32,9 @@ _VIEWER_HTML = r"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>repo-manual</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 <style>
-  :root { --bg:#0d1117; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --border:#30363d; }
+  :root { --bg:#0d1117; --panel:#161b22; --fg:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --border:#30363d; --lh:20px; --pad:12px; }
   * { box-sizing:border-box; }
   body { margin:0; font:14px/1.6 -apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); }
   header { padding:10px 20px; border-bottom:1px solid var(--border); display:flex; gap:16px; align-items:center; }
@@ -59,7 +62,7 @@ _VIEWER_HTML = r"""<!doctype html>
   details.syms { margin-top:28px; border-top:1px solid var(--border); padding-top:12px; }
   details.syms summary { cursor:pointer; color:var(--muted); user-select:none; }
   .sym { padding:5px 0; border-bottom:1px solid #21262d; }
-  .sym .nm { color:var(--accent); text-decoration:none; font-family:ui-monospace,monospace; }
+  .sym .nm { color:var(--accent); text-decoration:none; cursor:pointer; font-family:ui-monospace,monospace; }
   .sym .sig { color:var(--muted); font-family:ui-monospace,monospace; font-size:12px; }
   .sym .ln { color:var(--muted); font-size:12px; float:right; }
   /* graph view */
@@ -76,9 +79,25 @@ _VIEWER_HTML = r"""<!doctype html>
   #ginfo .r { color:var(--muted); font-size:12px; }
   #ginfo a { color:var(--accent); cursor:pointer; }
   .hint { color:var(--muted); font-size:12px; }
+  /* source view */
+  #srcOverlay { display:none; position:fixed; inset:0; z-index:50; flex-direction:column; background:var(--bg); }
+  .srcbar { display:flex; gap:12px; align-items:center; padding:10px 16px; border-bottom:1px solid var(--border); }
+  .srcbar .t { font-family:ui-monospace,monospace; color:var(--accent); }
+  .srcbar .sub { color:var(--muted); font-size:12px; }
+  .srcbar .right { margin-left:auto; display:flex; gap:10px; align-items:center; }
+  .srcbar a { color:var(--muted); font-size:12px; text-decoration:none; }
+  .srcbar button { background:var(--panel); color:var(--fg); border:1px solid var(--border); border-radius:6px; cursor:pointer; padding:4px 10px; }
+  #srcScroll { flex:1; overflow:auto; display:flex; background:var(--panel); }
+  .srcgutter { margin:0; padding:var(--pad) 8px var(--pad) 14px; text-align:right; color:#6e7681; font:12.5px/var(--lh) ui-monospace,monospace; user-select:none; background:#0e131a; white-space:pre; }
+  .srcgutter .hl { color:var(--accent); font-weight:600; }
+  .srcmain { position:relative; flex:1; }
+  #srcBand { display:none; position:absolute; left:0; right:0; background:#1f6feb22; border-left:2px solid var(--accent); pointer-events:none; }
+  .srccode { margin:0; padding:var(--pad) 16px; font:12.5px/var(--lh) ui-monospace,monospace; }
+  .srccode code.hljs { background:transparent !important; padding:0; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/cytoscape@3/dist/cytoscape.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
 <header>
@@ -107,6 +126,16 @@ _VIEWER_HTML = r"""<!doctype html>
     <div id="ginfo"></div>
   </div>
 </div>
+<div id="srcOverlay">
+  <div class="srcbar">
+    <span class="t" id="srcTitle"></span><span class="sub" id="srcSub"></span>
+    <span class="right"><a id="srcRaw" target="_blank">raw &#8599;</a><button onclick="closeSource()">&#10005; close (Esc)</button></span>
+  </div>
+  <div id="srcScroll">
+    <pre class="srcgutter" id="srcGutter"></pre>
+    <div class="srcmain"><div id="srcBand"></div><pre class="srccode"><code id="srcCode"></code></pre></div>
+  </div>
+</div>
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 mermaid.initialize({ startOnLoad:false, theme:'dark', securityLevel:'loose' });
@@ -114,20 +143,53 @@ mermaid.initialize({ startOnLoad:false, theme:'dark', securityLevel:'loose' });
 const $ = s => document.querySelector(s);
 const BADGE = { fresh:'✅', stale:'⚠️', pending:'○' };
 const PALETTE = ['#58a6ff','#3fb950','#d29922','#db61a2','#a371f7','#f78166','#56d4dd','#e3b341','#7ee787','#ffa657'];
+const LH = 20, PAD = 12;  // must match --lh / --pad in CSS for the source highlight band
 
 let MANUAL = null, PAGES = {}, SYMBOLS = [], SYMBYID = {}, FILES = [], EDGES = [];
-let F2P = {};          // file -> [{section,id}]
-let PAGECOLOR = {};    // page id -> color
+let F2P = {}, PAGECOLOR = {}, CURRENT = null;
 let cy = null, gmode = 'imports', graphBuilt = false;
+
+// ---- source view (syntax-highlighted, jump-to-symbol) ----
+function lang(file){
+  const ext = file.split('.').pop();
+  return { py:'python', ts:'typescript', tsx:'typescript', js:'javascript', jsx:'javascript',
+           sql:'sql', go:'go', rs:'rust', java:'java', json:'json', md:'markdown' }[ext] || 'plaintext';
+}
+window.openSource = async (file, start, end) => {
+  start = start || 0; end = end || start;
+  const txt = await fetch('../' + file).then(r => r.text());
+  const lines = txt.split('\n');
+  $('#srcGutter').innerHTML = lines.map((_, i) => {
+    const ln = i + 1; const hot = start && ln >= start && ln <= end;
+    return '<span' + (hot ? ' class="hl"' : '') + '>' + ln + '</span>';
+  }).join('\n');
+  const code = $('#srcCode'); code.className = 'language-' + lang(file); code.textContent = txt;
+  delete code.dataset.highlighted; hljs.highlightElement(code);
+  const band = $('#srcBand');
+  if (start){ band.style.display = 'block'; band.style.top = (PAD + (start - 1) * LH) + 'px';
+    band.style.height = ((end - start + 1) * LH) + 'px'; } else band.style.display = 'none';
+  $('#srcTitle').textContent = file; $('#srcSub').textContent = start ? ' :' + start + '-' + end : '';
+  $('#srcRaw').href = '../' + file;
+  $('#srcOverlay').style.display = 'flex';
+  requestAnimationFrame(() => { $('#srcScroll').scrollTop = start ? Math.max(0, PAD + (start - 1) * LH - 90) : 0; });
+};
+window.closeSource = () => { $('#srcOverlay').style.display = 'none'; };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSource(); });
+
+// intercept links to source files inside rendered Markdown so they open the highlighted view
+function interceptSourceLinks(container){
+  container.querySelectorAll('a[href]').forEach(a => {
+    const m = /^(?:\.\.\/)+(.+\.(?:py|ts|tsx|js|jsx|sql|go|rs|java))(?:#L?(\d+))?$/.exec(a.getAttribute('href'));
+    if (m) a.addEventListener('click', ev => { ev.preventDefault(); openSource(m[1], +m[2] || 0, +m[2] || 0); });
+  });
+}
 
 // ---- manual view ----
 function stripFront(md){
   if (md.startsWith('---')) { const e = md.indexOf('\n---', 3); if (e >= 0) return md.slice(md.indexOf('\n', e + 1) + 1); }
   return md;
 }
-async function loadPage(p, el){
-  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-  if (el) el.classList.add('active');
+async function renderPage(p){
   const md = await fetch('manual/' + p.section + '/' + p.id + '.md').then(r => r.text());
   const main = $('#main');
   const page = document.createElement('div'); page.className = 'page';
@@ -138,16 +200,18 @@ async function loadPage(p, el){
     c.closest('pre').replaceWith(d);
   });
   try { await mermaid.run({ nodes: page.querySelectorAll('.mermaid') }); } catch (e) {}
+  interceptSourceLinks(page);
+
   const files = (p.relevant_files || []).map(f => f.path);
   const syms = SYMBOLS.filter(s => files.includes(s.file) && s.kind !== 'module');
   if (syms.length){
     const det = document.createElement('details'); det.className = 'syms'; det.open = syms.length <= 18;
     det.appendChild(Object.assign(document.createElement('summary'),
-      { textContent: syms.length + ' functions / classes in this system — drill down' }));
+      { textContent: syms.length + ' functions / classes — click to view the source' }));
     syms.forEach(s => {
       const row = document.createElement('div'); row.className = 'sym';
-      const a = document.createElement('a'); a.className = 'nm';
-      a.href = '../' + s.file; a.target = '_blank'; a.textContent = s.qualname;
+      const a = document.createElement('a'); a.className = 'nm'; a.textContent = s.qualname;
+      a.onclick = () => openSource(s.file, s.line_start, s.line_end);
       const sig = document.createElement('span'); sig.className = 'sig'; sig.textContent = s.signature || '';
       const ln = document.createElement('span'); ln.className = 'ln';
       ln.textContent = s.file.split('/').pop() + ':' + s.line_start + '-' + s.line_end;
@@ -156,8 +220,22 @@ async function loadPage(p, el){
     page.appendChild(det);
   }
   main.scrollTop = 0;
-  history.replaceState(null, '', '#' + p.id);
 }
+function markActive(id){
+  document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', a.dataset.id === id));
+}
+// History-API routing: real Back/Forward between pages (the hash is the page id).
+async function navTo(id, push){
+  const p = PAGES[id]; if (!p) return;
+  CURRENT = id; showManual(); markActive(id);
+  if (push) history.pushState({ id }, '', '#' + id);
+  await renderPage(p);
+}
+window.addEventListener('popstate', e => {
+  closeSource();
+  const id = (e.state && e.state.id) || location.hash.slice(1);
+  if (PAGES[id]) navTo(id, false);
+});
 
 // ---- view toggle ----
 window.showManual = () => {
@@ -179,20 +257,12 @@ function pageIdForFile(file){
 function elementsFor(mode){
   const els = [];
   if (mode === 'imports'){
-    FILES.forEach(f => {
-      const pid = pageIdForFile(f.path);
-      els.push({ data:{ id:f.path, label:f.path.split('/').pop(), color:PAGECOLOR[pid] || '#888' } });
-    });
-    EDGES.filter(e => e.kind === 'imports').forEach((e, i) =>
-      els.push({ data:{ id:'e'+i, source:e.src, target:e.dst } }));
+    FILES.forEach(f => els.push({ data:{ id:f.path, label:f.path.split('/').pop(), color:PAGECOLOR[pageIdForFile(f.path)] || '#888' } }));
+    EDGES.filter(e => e.kind === 'imports').forEach((e, i) => els.push({ data:{ id:'e'+i, source:e.src, target:e.dst } }));
   } else {
     const calls = EDGES.filter(e => e.kind === 'calls');
     const used = new Set(); calls.forEach(e => { used.add(e.src); used.add(e.dst); });
-    used.forEach(id => {
-      const s = SYMBYID[id]; if (!s) return;
-      const pid = pageIdForFile(s.file);
-      els.push({ data:{ id:id, label:s.qualname, color:PAGECOLOR[pid] || '#888' } });
-    });
+    used.forEach(id => { const s = SYMBYID[id]; if (s) els.push({ data:{ id, label:s.qualname, color:PAGECOLOR[pageIdForFile(s.file)] || '#888' } }); });
     calls.forEach((e, i) => els.push({ data:{ id:'c'+i, source:e.src, target:e.dst } }));
   }
   return els;
@@ -233,20 +303,19 @@ function highlight(n){
   const info = $('#ginfo'); info.style.display = 'block';
   info.innerHTML = '<div class="t">' + n.data('label') + '</div>'
     + '<div class="r">' + (isImp ? 'imports' : 'calls') + ' ' + down.nodes().length
-    + ' &middot; ' + (isImp ? 'imported by' : 'called by') + ' ' + up.nodes().length
-    + ' <b>(blast radius)</b></div>'
-    + '<div class="r"><a id="goPage">open page &rarr;</a></div>';
-  const pid = pageIdForFile(isImp ? n.id() : (SYMBYID[n.id()] || {}).file);
-  $('#goPage').onclick = () => { if (PAGES[pid]) { showManual(); loadPage(PAGES[pid]); location.hash = pid; } };
+    + ' &middot; ' + (isImp ? 'imported by' : 'called by') + ' ' + up.nodes().length + ' <b>(blast radius)</b></div>'
+    + '<div class="r"><a id="goPage">open page &rarr;</a> &nbsp; <a id="goSrc">view source &rarr;</a></div>';
+  const sym = isImp ? null : SYMBYID[n.id()];
+  const file = isImp ? n.id() : (sym || {}).file;
+  const pid = pageIdForFile(file);
+  $('#goPage').onclick = () => { if (PAGES[pid]) navTo(pid, true); };
+  $('#goSrc').onclick = () => openSource(file, sym ? sym.line_start : 0, sym ? sym.line_end : 0);
 }
 window.clearHi = () => { if (cy) cy.elements().removeClass('faded root up down'); $('#ginfo').style.display = 'none'; };
 window.relayout = () => { if (cy) cy.layout(layoutFor(gmode)).run(); };
 window.setMode = (m) => {
-  gmode = m;
-  $('#mImports').classList.toggle('on', m === 'imports');
-  $('#mCalls').classList.toggle('on', m === 'calls');
-  if (cy) cy.destroy();
-  buildGraph();
+  gmode = m; $('#mImports').classList.toggle('on', m === 'imports'); $('#mCalls').classList.toggle('on', m === 'calls');
+  if (cy) cy.destroy(); buildGraph();
 };
 
 // ---- boot ----
@@ -258,7 +327,6 @@ async function boot(){
   EDGES = await fetch('index/edges.json').then(r => r.json()).then(d => d.edges).catch(() => []);
   SYMBOLS.forEach(s => SYMBYID[s.id] = s);
 
-  // file -> pages, and a color per page (system)
   let ci = 0;
   MANUAL.sections.forEach(sec => (sec.page_ids || []).forEach(id => {
     PAGECOLOR[id] = PALETTE[ci++ % PALETTE.length];
@@ -270,19 +338,18 @@ async function boot(){
   Object.values(PAGES).forEach(p => counts[p.status] = (counts[p.status] || 0) + 1);
   $('#sum').textContent = counts.fresh + ' fresh · ' + counts.stale + ' stale · ' + counts.pending + ' pending';
 
-  const nav = $('#nav'); let start = null;
+  const nav = $('#nav'); let first = null;
   MANUAL.sections.forEach(sec => {
     const h = document.createElement('div'); h.className = 'sec'; h.textContent = sec.title; nav.appendChild(h);
     (sec.page_ids || []).forEach(id => {
       const p = PAGES[id]; if (!p) return;
-      const a = document.createElement('a');
+      const a = document.createElement('a'); a.dataset.id = id;
       a.innerHTML = '<span>' + p.title + '</span><span class="badge">' + (BADGE[p.status] || '') + '</span>';
-      a.onclick = () => loadPage(p, a); nav.appendChild(a);
-      if (!start || location.hash.slice(1) === id) start = { p, a };
+      a.onclick = () => navTo(id, true); nav.appendChild(a);
+      if (!first) first = id;
     });
   });
 
-  // legend: system -> colour (skip overview/ungrouped meta pages for clarity)
   const legend = $('#legend');
   MANUAL.sections.forEach(sec => (sec.page_ids || []).forEach(id => {
     const p = PAGES[id]; if (!p || p.section === 'overview') return;
@@ -291,7 +358,8 @@ async function boot(){
     legend.appendChild(row);
   }));
 
-  if (start) loadPage(start.p, start.a);
+  const startId = (location.hash.slice(1) && PAGES[location.hash.slice(1)]) ? location.hash.slice(1) : first;
+  if (startId){ history.replaceState({ id:startId }, '', '#' + startId); navTo(startId, false); }
 }
 boot();
 </script>
