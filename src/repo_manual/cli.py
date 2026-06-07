@@ -13,6 +13,7 @@ Commands:
 * ``verify``    — the trust gate: every source citation resolves to a real file + line range.
 * ``hook``      — print/install a pre-commit drift + citation check.
 * ``serve``     — interactive browser view (nav by system, Mermaid, function drill-down). No new deps.
+* ``guide``     — print an onboarding guide for the agent driving the tool (give a fresh session this).
 
 See docs/architecture.md §5 for the orchestration model.
 """
@@ -309,6 +310,59 @@ _HOOK_SNIPPET = """\
 # Adjust the invocation below if `repo-manual` isn't on PATH (e.g. `uv run repo-manual`).
 repo-manual stale --check || exit 1
 repo-manual verify || exit 1
+"""
+
+
+@app.command()
+def guide() -> None:
+    """Print an onboarding guide for an AGENT (e.g. a fresh Claude Code session): your role as the
+    narrator, the full workflow, and how to write a page. Give a new session: `repo-manual guide`."""
+    typer.echo(_GUIDE)
+
+
+_GUIDE = r"""repo-manual — guide for the agent driving it
+=============================================
+
+WHAT THIS IS
+  An AI-authored, human-read orientation manual committed to a repo's `.repo-manual/`.
+  YOU (the agent running this tool) are the NARRATOR. The tool scans the code, groups it into
+  systems, and writes skeleton pages + a per-page brief; you write the prose. There is NO bundled
+  LLM. The tool then tracks freshness and verifies your citations. Run commands as `repo-manual ...`
+  (or `uv run repo-manual ...` if it's project-local).
+
+DOCUMENT A REPO FROM SCRATCH
+  1. repo-manual structure <repo>
+       -> writes .repo-manual/structure.suggested.json (a package-based seed) + structure.brief.json.
+  2. Author <repo>/.repo-manual/structure.json — group files into SYSTEMS: named groups by what the
+     code DOES (cross-folder is fine), each {id, title, description, importance, files[], related[]}.
+     Start from the suggested seed; MERGE modules that form one concept into one system.
+  3. repo-manual generate <repo>            # one skeleton page per system
+  4. For each pending page (`repo-manual plan <repo>` lists them):
+       repo-manual brief <page-id> --path <repo>     # files + symbol outline + the rules
+       Read the listed source files, then open
+         <repo>/.repo-manual/manual/<section>/<page-id>.md
+       and REPLACE the text between
+         <!-- repo-manual:generated:start -->  and  <!-- repo-manual:generated:end -->
+       with the chapter. NEVER touch the <!-- repo-manual:human:... --> region.
+  5. repo-manual ingest <repo>              # pins each narrated page to its source
+  6. repo-manual verify <repo> --strict     # every citation must resolve — fix any it flags
+  7. repo-manual serve <repo>               # browse it (Ctrl-C to stop)
+
+HOW TO WRITE A PAGE (the recipe — non-negotiable)
+  - Ground ONLY in the page's relevant files. Never invent. If something isn't in the source, say so.
+  - Cite every significant claim with a REAL line range:  `Sources: [path/to/file.py:START-END]()`
+  - Lead with purpose + the mental model; progressive disclosure (overview -> detail).
+  - Use Mermaid for diagrams (```mermaid then `graph TD`), tables for facts, a "Decisions & gotchas"
+    section for what bites, and end with "How it connects".
+
+KEEP IT FRESH (after the code changes)
+  repo-manual stale <repo>          # STALE = drifted, PENDING = never written
+  Re-narrate the stale pages (same brief -> rewrite -> ingest loop), then verify --strict.
+  repo-manual hook --install <repo> # optional pre-commit gate (fails on stale / broken citation)
+
+UNDERSTAND THE TOOL ITSELF
+  repo-manual self-documents. In the repo-manual repo, run `repo-manual serve` (or read
+  .repo-manual/manual/ — 7 systems, start at overview). Its CLAUDE.md lists commands + conventions.
 """
 
 

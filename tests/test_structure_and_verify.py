@@ -172,6 +172,20 @@ def test_brief_outputs_grounding(config):
     assert "Sources:" in result.stdout  # the citation rule is stated
 
 
+def test_guide_is_actionable(config):
+    from typer.testing import CliRunner
+
+    from repo_manual.cli import app
+
+    out = CliRunner().invoke(app, ["guide"]).output
+    # the guide must name the agent's role and the core loop commands
+    assert "NARRATOR" in out
+    for cmd in ("structure", "generate", "brief", "ingest", "verify"):
+        assert cmd in out, cmd
+    assert "repo-manual:generated:start" in out  # tells the agent exactly where to write
+    assert "Sources: [" in out  # the citation rule
+
+
 def test_viewer_written_and_self_contained(config):
     from repo_manual.viewer import VIEWER_NAME, write_viewer
 

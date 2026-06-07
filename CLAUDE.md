@@ -22,6 +22,8 @@ The full loop works with **no bundled LLM** — the agent running the tool is th
 - `verify [--strict]` — **trust gate**: check every `Sources: [file:Ls-Le]` citation resolves to a real
   file + line range (catches fabricated/drifted references). No LLM.
 - `hook [--install]` — print/install a pre-commit drift + citation check (`stale --check` + `verify`).
+- `guide` — prints an onboarding primer for the agent driving the tool (role = narrator + the full
+  workflow + the page-writing recipe). Give a fresh session `repo-manual guide` to teach it the loop.
 - `serve [--port]` — interactive browser viewer (`viewer.py`): a single no-build `index.html` (CDN
   marked + mermaid + cytoscape) over `manual.json` + `index/symbols.json` + `index/edges.json`, served by
   stdlib `http.server` from the repo root. **Zero new Python deps.** Two views: (1) Manual — sidebar nav
